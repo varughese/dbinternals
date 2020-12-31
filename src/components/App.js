@@ -1,10 +1,10 @@
-import { BTree } from "./btree";
+import { BTreeComponent } from "./btree";
 
 function App() {
     return (
         <div className="App">
             <div className="bg-red-400">f</div>
-            <BTree />
+            <BTreeComponent />
         </div>
     );
 }
