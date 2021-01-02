@@ -13,6 +13,33 @@ const diagonal = d3
     .x((d) => d.x)
     .y((d) => d.y);
 
+// color paths down to newly added node
+function colorPath(node) {
+    // color the node itself
+    d3.selectAll("g.node")
+        .filter(function (d) {
+            return d.data.name === node.keys.toString();
+        })
+        .select("rect")
+        .classed("colored", true);
+
+    if (!node.parent) return;
+    else {
+        // filter for links that connect with this node
+        d3.selectAll(".link")
+            .filter(function (d) {
+                return d.target.data.name === node.keys.toString();
+            })
+            .classed("colored", true);
+        return colorPath(node.parent);
+    }
+}
+
+function resetColors() {
+    d3.selectAll(".colored").classed("colored", false);
+    d3.selectAll(".touched").classed("touched", false);
+}
+
 function update(ctx, treeData) {
     const { gNode, gLink, svg } = ctx;
     const root = d3.hierarchy(treeData);
@@ -24,7 +51,7 @@ function update(ctx, treeData) {
     });
     const source = root;
 
-    const duration = 400;
+    const duration = 800;
     const nodes = root.descendants().reverse();
     const links = root.links();
 
@@ -53,6 +80,7 @@ function update(ctx, treeData) {
     const nodeEnter = node
         .enter()
         .append("g")
+        .attr("class", "node")
         .attr("transform", (d) => `translate(${d.x},${d.y})`)
         .attr("fill-opacity", 0)
         .attr("stroke-opacity", 0)
@@ -104,6 +132,7 @@ function update(ctx, treeData) {
     const linkEnter = link
         .enter()
         .append("path")
+        .attr("class", "link")
         .attr("d", (d) => {
             const o = { x: source.x0, y: source.y0 };
             return diagonal({ source: o, target: o });
@@ -189,8 +218,19 @@ export const BTreeComponent = () => {
             <input value={insertVal} onChange={(e) => setVal(e.target.value)} />
             <button
                 onClick={() => {
+                    resetColors();
                     treeIndex.insert(Number(insertVal), true);
                     update(d3Context, treeIndex.toJSON());
+                    var bTreeNode = treeIndex.search(Number(insertVal));
+                    var d3NodeTouched = d3
+                        .selectAll("g.node")
+                        .filter(function (d) {
+                            return d.data.name === bTreeNode.keys.toString();
+                        })
+                        .select("rect");
+                    // todo rename this class
+                    d3NodeTouched.classed("touched", true);
+                    colorPath(bTreeNode);
                 }}
             >
                 Add

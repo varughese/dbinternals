@@ -14,10 +14,17 @@
   .node--internal text {
 	text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
   }
+
+  rect.touched.colored {
+    stroke: #b70000;
+    fill: #ffe3e3;
+	}
+  .colored {
+	stroke:steelblue;
+	stroke-width: 1px;
+  }
+
   
   .link {
-	fill: none;
-	stroke: #ccc;
-	stroke-width: 2px;
   }
   
