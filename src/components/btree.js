@@ -6,7 +6,7 @@ const ORDER = 3;
 const margin = { top: 10, right: 120, bottom: 10, left: 40 };
 const width = 500;
 const dy = 20;
-const dx = 40 + ORDER * 5;
+const dx = 20 + ORDER * 2;
 const tree = d3.tree().nodeSize([dx, dy]);
 const diagonal = d3
     .linkVertical()
@@ -215,7 +215,11 @@ export const BTreeComponent = () => {
 
     return (
         <div>
-            <input value={insertVal} onChange={(e) => setVal(e.target.value)} />
+            <input
+                value={insertVal}
+                onChange={(e) => setVal(e.target.value)}
+                className="flex-1 appearance-none border border-transparent py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-md rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            />
             <button
                 onClick={() => {
                     resetColors();
@@ -232,6 +236,7 @@ export const BTreeComponent = () => {
                     d3NodeTouched.classed("touched", true);
                     colorPath(bTreeNode);
                 }}
+                className="flex-shrink-0 bg-purple-600 text-white text-base font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
             >
                 Add
             </button>
